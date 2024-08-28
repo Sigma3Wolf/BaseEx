@@ -3,6 +3,32 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# =========================
+# Prototype Omega
+# =========================
+basedOn/
+
+# =========================
+# SQL Server files
+# =========================
+
+App_Data/*.mdf
+App_Data/*.ldf
+
+# =========================
+# Windows temporary file
+# =========================
+
+# Windows image file caches
+thumbs.db
+
+# Folder config file
+desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+# =========================
+
 # User-specific files
 *.rsuser
 *.suo
