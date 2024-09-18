@@ -157,8 +157,10 @@ namespace HexExExample {
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            HexEx hexEx = new(HexEx.enmHexExBase.Base32, "3HQ");
-            hexEx++;
+            HexEx hexEx = new(HexEx.enmHexExBase.Base16, "A");
+            //hexEx++;
+            hexEx = hexEx + 4;
+            //hexEx.SetBase()
 
             //this need to be fixed because hexEx++ doesn'T take into account the BASE of the HexEx object
             //See library line 117:

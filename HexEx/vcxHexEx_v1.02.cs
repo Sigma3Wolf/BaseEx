@@ -40,7 +40,7 @@ namespace PrototypeOmega {
         }
 
         private static Random gobjRnd = new Random();
-        private readonly enmHexExBase genmHexExSize;
+        public readonly enmHexExBase genmHexExSize;
         private readonly string gstrHexExCharBank;
 
         private long glngHexExValue = 0;
@@ -100,6 +100,7 @@ namespace PrototypeOmega {
         }
 
         public override string ToString() {
+            //use this.genmHexExSize as output
             if (this.gblnHexExChanged == true) {
                 this.gstrHexExToString = ValueToString(this.glngHexExValue, this.genmHexExSize);
                 this.gblnHexExChanged = false;
@@ -110,11 +111,20 @@ namespace PrototypeOmega {
 
         public static implicit operator long(HexEx d) => d.HexExValue;
 
+
+        //
+        //public static implicit operator HexEx(long b) => new HexEx(CurrentHexExBase, b);
+        //public static implicit operator HexEx(enmHexExBase a, long b) => new HexEx(a, b);
+        
+
         //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base2, b);
         //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base8, b);
-        //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base10, b);
+        public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base10, b);
         //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base16, b);
-        public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base32, b);
+
+        //public static implicit operator HexEx(this a, long b) => new HexEx(a, b);
+        
+        //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base32, b);
         //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base55, b);
 
         //public static HexEx operator +(HexEx b, byte amount) => new HexEx(b.HexExValue + amount);
