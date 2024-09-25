@@ -14,6 +14,7 @@
 //v1.01 - 2024-08-20:	Change Hex32PadLeft to public; Minimum size is now 2; byte is used instead of ushort;
 //							add Hex16 (regular 16 bit) and Hex55 (55 bit);
 //v1.02 - 2024-08-27:	Remove dependency to outside library (include static rnd);
+//v1.03 - 2024-09-25:	Updated ToString to allow enmHexExBase argument;
 
 //Variable declaration
 using System.Collections.Generic;
@@ -45,23 +46,19 @@ namespace PrototypeOmega {
 
         private long glngHexExValue = 0;
         private string gstrHexExToString;
-        private bool gblnHexExChanged;
         private int glngMaxChar;
-        private static Dictionary<string, long> gdicTableValue = new();
+        private static Dictionary<string, long> gdicTableValue = CreateDictionary();
 
         public HexEx(enmHexExBase penmHexExSize = enmHexExBase.Base32, long plngValue = 0) {
-            gdicTableValue = CreateDictionary();
             this.genmHexExSize = penmHexExSize;
             this.gstrHexExCharBank = CharBank(penmHexExSize);
             this.glngMaxChar = MaxChar(penmHexExSize);
 
             this.glngHexExValue = Math.Abs(plngValue);
             this.gstrHexExToString = "";
-            this.gblnHexExChanged = true;
         }
 
         public HexEx(enmHexExBase penmHexExSize = enmHexExBase.Base32, string pstrtValue = "0") {
-            gdicTableValue = CreateDictionary();
             this.genmHexExSize = penmHexExSize;
             this.gstrHexExCharBank = CharBank(penmHexExSize);
             this.glngMaxChar = MaxChar(penmHexExSize);
@@ -70,7 +67,6 @@ namespace PrototypeOmega {
             long lngValue = HexEx.StringToValue(penmHexExSize, pstrtValue);
             this.glngHexExValue = lngValue;
             this.gstrHexExToString = "";
-            this.gblnHexExChanged = true;
         }
 
         public enmHexExBase HexExBase {
@@ -94,42 +90,29 @@ namespace PrototypeOmega {
                 long lngValueTmp = Math.Abs(value);
                 if (value != glngHexExValue) {
                     this.glngHexExValue = value;
-                    this.gblnHexExChanged = true;
                 }
             }
         }
 
-        public override string ToString() {
+        public new string ToString() {
             //use this.genmHexExSize as output
-            if (this.gblnHexExChanged == true) {
-                this.gstrHexExToString = ValueToString(this.glngHexExValue, this.genmHexExSize);
-                this.gblnHexExChanged = false;
-            }
+            this.gstrHexExToString = ValueToString(this.glngHexExValue, this.genmHexExSize);
+
+            return this.gstrHexExToString;
+        }
+
+        public string ToString(enmHexExBase penmHexExSize) {
+            //use this.genmHexExSize as output
+            this.gstrHexExToString = ValueToString(this.glngHexExValue, penmHexExSize);
 
             return this.gstrHexExToString;
         }
 
         public static implicit operator long(HexEx d) => d.HexExValue;
 
-
-        //
         public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base10, b);
-        
-        //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base16, b);
-        //public static implicit operator HexEx(long b) => new HexEx(CurrentHexExBase, b);
         //public static implicit operator HexEx(enmHexExBase a, long b) => new HexEx(a, b);
-
-
-        //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base2, b);
-        //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base8, b);
-
-        //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base16, b);
-
         //public static implicit operator HexEx(this a, long b) => new HexEx(a, b);
-
-        //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base32, b);
-        //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base55, b);
-
         //public static HexEx operator +(HexEx b, byte amount) => new HexEx(b.HexExValue + amount);
         //public static HexEx operator -(HexEx b, byte amount) => new HexEx(b.HexExValue - amount);
 

@@ -157,16 +157,18 @@ namespace HexExExample {
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            HexEx hexEx = new(HexEx.enmHexExBase.Base16, "A");
+            HexEx hexEx = new(HexEx.enmHexExBase.Base16, "E82");
             //hexEx++;
-            hexEx = hexEx + 4;
-            //hexEx.SetBase()
+            hexEx = hexEx % 22;
+            //hexEx = hexEx + 4;
+            //hexEx.ToString("-");
 
-            //this need to be fixed because hexEx++ doesn'T take into account the BASE of the HexEx object
-            //See library line 117:
-            // public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base32, b);
-
-            Debug.Write(hexEx.ToString());
+            Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base2));
+            Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base8));
+            Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base10));
+            Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base16));
+            Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base32));
+            Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base55));
         }
     }
 }
