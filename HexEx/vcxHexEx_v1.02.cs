@@ -113,17 +113,20 @@ namespace PrototypeOmega {
 
 
         //
+        public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base10, b);
+        
+        //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base16, b);
         //public static implicit operator HexEx(long b) => new HexEx(CurrentHexExBase, b);
         //public static implicit operator HexEx(enmHexExBase a, long b) => new HexEx(a, b);
-        
+
 
         //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base2, b);
         //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base8, b);
-        public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base10, b);
+
         //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base16, b);
 
         //public static implicit operator HexEx(this a, long b) => new HexEx(a, b);
-        
+
         //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base32, b);
         //public static implicit operator HexEx(long b) => new HexEx(enmHexExBase.Base55, b);
 
