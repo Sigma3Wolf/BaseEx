@@ -15,6 +15,9 @@
 //							add Hex16 (regular 16 bit) and Hex55 (55 bit);
 //v1.02 - 2024-08-27:	Remove dependency to outside library (include static rnd);
 //v1.03 - 2024-09-25:	Updated ToString to allow enmHexExBase argument;
+//v2.00 - 2024-10-04:	Breaking change;
+//                          replaced Base32 by Base34; remove Base32 ** won't be used for calculation **
+//                          replaced Base55 by Base56; remove Base55 ** won't be used for calculation **
 
 //Variable declaration
 using System.Collections.Generic;
@@ -34,10 +37,10 @@ namespace PrototypeOmega {
 
             Base16 = 16,
 
-            [Display(Name = "Base32 (default)")]
-            Base32 = 32,
+            [Display(Name = "Base35 (default)")]
+            Base35 = 35,
 
-            Base55 = 55
+            Base56 = 56
         }
 
         private static Random gobjRnd = new Random();
@@ -49,7 +52,7 @@ namespace PrototypeOmega {
         private int glngMaxChar;
         private static Dictionary<string, long> gdicTableValue = CreateDictionary();
 
-        public HexEx(enmHexExBase penmHexExSize = enmHexExBase.Base32, long plngValue = 0) {
+        public HexEx(enmHexExBase penmHexExSize = enmHexExBase.Base35, long plngValue = 0) {
             this.genmHexExSize = penmHexExSize;
             this.gstrHexExCharBank = CharBank(penmHexExSize);
             this.glngMaxChar = MaxChar(penmHexExSize);
@@ -58,7 +61,7 @@ namespace PrototypeOmega {
             this.gstrHexExToString = "";
         }
 
-        public HexEx(enmHexExBase penmHexExSize = enmHexExBase.Base32, string pstrtValue = "0") {
+        public HexEx(enmHexExBase penmHexExSize = enmHexExBase.Base35, string pstrtValue = "0") {
             this.genmHexExSize = penmHexExSize;
             this.gstrHexExCharBank = CharBank(penmHexExSize);
             this.glngMaxChar = MaxChar(penmHexExSize);
@@ -138,15 +141,15 @@ namespace PrototypeOmega {
             //                            1234567890123456
             const string cstrBase16 = cstrBase10 + "ABCDEF";
 
-            //                      ****  Base32  ****
+            //                      ****  Base35  ****
             //                                     1         2         3
-            //                            12345678901234567890123456789012
-            const string cstrBase32 = cstrBase10 + "ACDEFGHJKLMNPQRTUVWXYZ";
+            //                            12345678901234567890123456789012345
+            const string cstrBase35 = cstrBase10 + "abcdefghijkmnopqrstuvwxyz";
 
-            //                      ****  Base55  ****
-            //               1         2         3         4         5
-            //      1234567890123456789012345678901234567890123456789012345
-            const string cstrBase55 = cstrBase32 + "abdefghijkmnpqrstuvwxyz";
+            //                      ****  Base56  ****
+            //            1         2         3         4         5
+            //   12345678901234567890123456789012345678901234567890123456
+            const string cstrBase56 = cstrBase35 + "ADEFGHJKLMNPQRTUVWXYZ";
 
             switch (enmHexSize) {
                 case enmHexExBase.Base2:
@@ -162,29 +165,25 @@ namespace PrototypeOmega {
                     break;
 
                 case enmHexExBase.Base16:
-
                     strRet = cstrBase16;
                     break;
 
-                case enmHexExBase.Base55:
+                case enmHexExBase.Base56:
+                    //                ****  Base56  ****
+                    //                base 35 + Added caracter to achieved Base55
                     //B removed (8)
+                    //C removed (c) - from Base 35
                     //I removed (1)
                     //O removed (0)
                     //S removed (5)
-
-                    //c removed (C)
-                    //l removed (1)
-                    //o removed (0)
-                    strRet = cstrBase55;
+                    strRet = cstrBase56;
                     break;
 
+                case enmHexExBase.Base35:
                 default:
-                    //                  ****  Base32  ****
-                    //B removed (8)
-                    //I removed (1)
-                    //O removed (0)
-                    //S removed (5)
-                    strRet = cstrBase32;
+                    //                ****  Base35  ****
+                    //l removed (1)
+                    strRet = cstrBase35;
                     break;
             }
 
@@ -219,7 +218,7 @@ namespace PrototypeOmega {
         private static string HexExFixCase(enmHexExBase enmHexSize, string pstrHexEx) {
             string strRet = pstrHexEx;
 
-            if (enmHexSize != enmHexExBase.Base55) {
+            if (enmHexSize != enmHexExBase.Base56) {
                 strRet = strRet.ToUpper();
             }
 
@@ -237,33 +236,36 @@ namespace PrototypeOmega {
             return strRet;
         }
 
-        public static string HexExNormalize(enmHexExBase penmHexExSize, string pstrHexEx) {
+        //This should only be used when user entered their own data, NOT when using a QRCode
+        public static string HexExNormalizeUserEntry(enmHexExBase penmHexExSize, string pstrHexEx) {
             string strRet = HexExFixCase(penmHexExSize, pstrHexEx);
 
-            if ((penmHexExSize == enmHexExBase.Base32) || (penmHexExSize == enmHexExBase.Base55)) {
-                //B removed (8)
-                strRet = strRet.Replace('B', '8');
+            //** AFTER 1.04 breaking changed, this need to be reevaluated !!!
 
-                //I removed (1)
-                strRet = strRet.Replace('I', '1');
+            //if ((penmHexExSize == enmHexExBase.Base34) || (penmHexExSize == enmHexExBase.Base55)) {
+            //    //B removed (8)
+            //    strRet = strRet.Replace('B', '8');
 
-                //O removed (0)
-                strRet = strRet.Replace('O', '0');
+            //    //I removed (1)
+            //    strRet = strRet.Replace('I', '1');
 
-                //S removed (5)
-                strRet = strRet.Replace('S', '5');
-            }
+            //    //O removed (0)
+            //    strRet = strRet.Replace('O', '0');
 
-            if (penmHexExSize == enmHexExBase.Base55) {
-                //c removed (C)
-                strRet = strRet.Replace('c', 'C');
+            //    //S removed (5)
+            //    strRet = strRet.Replace('S', '5');
+            //}
 
-                //l removed (1)
-                strRet = strRet.Replace('l', '1');
+            //if (penmHexExSize == enmHexExBase.Base55) {
+            //    //c removed (C)
+            //    strRet = strRet.Replace('c', 'C');
 
-                //o removed (0)
-                strRet = strRet.Replace('o', '0');
-            }
+            //    //l removed (1)
+            //    strRet = strRet.Replace('l', '1');
+
+            //    //o removed (0)
+            //    strRet = strRet.Replace('o', '0');
+            //}
 
             return strRet;
         }
@@ -294,6 +296,7 @@ namespace PrototypeOmega {
         public static byte MaxChar(enmHexExBase penmHexSize) {
             byte lngMaxChar = 10;  //Base55
 
+            //To improve: We should use a formulae instead, based on uInt
             switch (penmHexSize) {
                 case enmHexExBase.Base2:
                     lngMaxChar = 62;
@@ -311,7 +314,7 @@ namespace PrototypeOmega {
                     lngMaxChar = 14;
                     break;
 
-                case enmHexExBase.Base32:
+                case enmHexExBase.Base35:
                     lngMaxChar = 12;
                     break;
             }

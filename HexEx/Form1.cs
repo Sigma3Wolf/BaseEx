@@ -12,8 +12,9 @@ namespace HexExExample {
             this.radioButton2.Click += this.RadioButtonHex_Click;
             this.radioButton10.Click += this.RadioButtonHex_Click;
             this.radioButton16.Click += this.RadioButtonHex_Click;
-            this.radioButton32.Click += this.RadioButtonHex_Click;
-            this.radioButton55.Click += this.RadioButtonHex_Click;
+            this.radioButtonA.Click += this.RadioButtonHex_Click;
+            this.radioButtonB.Click += this.RadioButtonHex_Click;
+            this.cmdRandom.Click += this.CmdRandom_Click;
 
             this.txtValue.KeyPress += this.TxtValue_KeyPress;
             this.txtValue.TextChanged += this.TxtValue_TextChanged;
@@ -22,6 +23,11 @@ namespace HexExExample {
             radioButton10.Checked = true;
             this.strCharBank = HexEx.CharBank(enmHexExSize);
             this.txtValue.Text = "0";
+        }
+
+        private void CmdRandom_Click(object? sender, EventArgs e) {
+            string strValue = HexEx.HexExRnd(this.enmHexExSize);
+            txtValue.Text = strValue;
         }
 
         private void TxtValue_TextChanged(object? sender, EventArgs e) {
@@ -41,7 +47,7 @@ namespace HexExExample {
                 default:
                     //Prevent entering invalid character
                     if (!strCharBank.Contains(e.KeyChar)) {
-                        if ((this.enmHexExSize == HexEx.enmHexExBase.Base16) || (this.enmHexExSize == HexEx.enmHexExBase.Base32)) {
+                        if ((this.enmHexExSize == HexEx.enmHexExBase.Base16) || (this.enmHexExSize == HexEx.enmHexExBase.Base35)) {
                             //Check for LowerCase
                             string strDn = strCharBank.ToLower();
                             if (!strDn.Contains(e.KeyChar)) {
@@ -78,13 +84,13 @@ namespace HexExExample {
                         this.enmHexExSize = HexEx.enmHexExBase.Base16;
                         break;
 
-                    case "radioButton32":
-                        this.enmHexExSize = HexEx.enmHexExBase.Base32;
+                    case "radioButtonA":
+                        this.enmHexExSize = HexEx.enmHexExBase.Base35;
                         break;
 
-                    case "radioButton55":
+                    case "radioButtonB":
                     default:
-                        this.enmHexExSize = HexEx.enmHexExBase.Base55;
+                        this.enmHexExSize = HexEx.enmHexExBase.Base56;
                         break;
                 }
                 this.strCharBank = HexEx.CharBank(this.enmHexExSize);
@@ -104,8 +110,8 @@ namespace HexExExample {
                 this.txtBase8.Text = "0";
                 this.txtBase10.Text = "0";
                 this.txtBase16.Text = "0";
-                this.txtBase32.Text = "0";
-                this.txtBase55.Text = "0";
+                this.txtBaseA.Text = "0";
+                this.txtBaseB.Text = "0";
             } else {
                 long lngValue;
                 lngValue = HexEx.StringToValue(this.enmHexExSize, strValidated);
@@ -148,11 +154,11 @@ namespace HexExExample {
                 HexEx hexEx16 = new HexEx(HexEx.enmHexExBase.Base16, lngValue);
                 this.txtBase16.Text = hexEx16.ToString();
 
-                HexEx hexEx32 = new HexEx(HexEx.enmHexExBase.Base32, lngValue);
-                this.txtBase32.Text = hexEx32.ToString();
+                HexEx hexEx32 = new HexEx(HexEx.enmHexExBase.Base35, lngValue);
+                this.txtBaseA.Text = hexEx32.ToString();
 
-                HexEx hexEx55 = new HexEx(HexEx.enmHexExBase.Base55, lngValue);
-                this.txtBase55.Text = hexEx55.ToString();
+                HexEx hexEx55 = new HexEx(HexEx.enmHexExBase.Base56, lngValue);
+                this.txtBaseB.Text = hexEx55.ToString();
             }
         }
 
@@ -167,8 +173,8 @@ namespace HexExExample {
             Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base8));
             Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base10));
             Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base16));
-            Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base32));
-            Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base55));
+            Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base35));
+            Debug.WriteLine(hexEx.ToString(HexEx.enmHexExBase.Base56));
         }
     }
 }

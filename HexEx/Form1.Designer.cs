@@ -29,11 +29,11 @@
             this.label3 = new Label();
             this.label4 = new Label();
             this.txtBase16 = new TextBox();
-            this.txtBase32 = new TextBox();
-            this.txtBase55 = new TextBox();
+            this.txtBaseA = new TextBox();
+            this.txtBaseB = new TextBox();
             this.radioButton16 = new RadioButton();
-            this.radioButton32 = new RadioButton();
-            this.radioButton55 = new RadioButton();
+            this.radioButtonA = new RadioButton();
+            this.radioButtonB = new RadioButton();
             this.radioButton10 = new RadioButton();
             this.radioButton2 = new RadioButton();
             this.txtBase10 = new TextBox();
@@ -43,12 +43,13 @@
             this.txtBase8 = new TextBox();
             this.label6 = new Label();
             this.button1 = new Button();
+            this.cmdRandom = new Button();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new Point(12, 195);
+            this.label1.Location = new Point(12, 258);
             this.label1.Name = "label1";
             this.label1.Size = new Size(81, 25);
             this.label1.TabIndex = 0;
@@ -56,7 +57,7 @@
             // 
             // txtValue
             // 
-            this.txtValue.Location = new Point(12, 223);
+            this.txtValue.Location = new Point(12, 286);
             this.txtValue.Name = "txtValue";
             this.txtValue.Size = new Size(282, 33);
             this.txtValue.TabIndex = 1;
@@ -77,7 +78,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new Size(76, 25);
             this.label3.TabIndex = 3;
-            this.label3.Text = "Base 32";
+            this.label3.Text = "Base 35";
             // 
             // label4
             // 
@@ -86,7 +87,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new Size(76, 25);
             this.label4.TabIndex = 4;
-            this.label4.Text = "Base 55";
+            this.label4.Text = "Base 56";
             // 
             // txtBase16
             // 
@@ -96,21 +97,21 @@
             this.txtBase16.Size = new Size(427, 33);
             this.txtBase16.TabIndex = 5;
             // 
-            // txtBase32
+            // txtBaseA
             // 
-            this.txtBase32.Location = new Point(453, 172);
-            this.txtBase32.Name = "txtBase32";
-            this.txtBase32.ReadOnly = true;
-            this.txtBase32.Size = new Size(427, 33);
-            this.txtBase32.TabIndex = 7;
+            this.txtBaseA.Location = new Point(453, 172);
+            this.txtBaseA.Name = "txtBaseA";
+            this.txtBaseA.ReadOnly = true;
+            this.txtBaseA.Size = new Size(427, 33);
+            this.txtBaseA.TabIndex = 7;
             // 
-            // txtBase55
+            // txtBaseB
             // 
-            this.txtBase55.Location = new Point(453, 211);
-            this.txtBase55.Name = "txtBase55";
-            this.txtBase55.ReadOnly = true;
-            this.txtBase55.Size = new Size(427, 33);
-            this.txtBase55.TabIndex = 8;
+            this.txtBaseB.Location = new Point(453, 211);
+            this.txtBaseB.Name = "txtBaseB";
+            this.txtBaseB.ReadOnly = true;
+            this.txtBaseB.Size = new Size(427, 33);
+            this.txtBaseB.TabIndex = 8;
             // 
             // radioButton16
             // 
@@ -123,27 +124,27 @@
             this.radioButton16.Text = "Base 16";
             this.radioButton16.UseVisualStyleBackColor = true;
             // 
-            // radioButton32
+            // radioButtonA
             // 
-            this.radioButton32.AutoSize = true;
-            this.radioButton32.Location = new Point(29, 117);
-            this.radioButton32.Name = "radioButton32";
-            this.radioButton32.Size = new Size(94, 29);
-            this.radioButton32.TabIndex = 10;
-            this.radioButton32.TabStop = true;
-            this.radioButton32.Text = "Base 32";
-            this.radioButton32.UseVisualStyleBackColor = true;
+            this.radioButtonA.AutoSize = true;
+            this.radioButtonA.Location = new Point(29, 117);
+            this.radioButtonA.Name = "radioButtonA";
+            this.radioButtonA.Size = new Size(94, 29);
+            this.radioButtonA.TabIndex = 10;
+            this.radioButtonA.TabStop = true;
+            this.radioButtonA.Text = "Base 35";
+            this.radioButtonA.UseVisualStyleBackColor = true;
             // 
-            // radioButton55
+            // radioButtonB
             // 
-            this.radioButton55.AutoSize = true;
-            this.radioButton55.Location = new Point(29, 153);
-            this.radioButton55.Name = "radioButton55";
-            this.radioButton55.Size = new Size(94, 29);
-            this.radioButton55.TabIndex = 11;
-            this.radioButton55.TabStop = true;
-            this.radioButton55.Text = "Base 55";
-            this.radioButton55.UseVisualStyleBackColor = true;
+            this.radioButtonB.AutoSize = true;
+            this.radioButtonB.Location = new Point(29, 153);
+            this.radioButtonB.Name = "radioButtonB";
+            this.radioButtonB.Size = new Size(94, 29);
+            this.radioButtonB.TabIndex = 11;
+            this.radioButtonB.TabStop = true;
+            this.radioButtonB.Text = "Base 56";
+            this.radioButtonB.UseVisualStyleBackColor = true;
             // 
             // radioButton10
             // 
@@ -229,10 +230,20 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += this.button1_Click;
             // 
+            // cmdRandom
+            // 
+            this.cmdRandom.Location = new Point(300, 286);
+            this.cmdRandom.Name = "cmdRandom";
+            this.cmdRandom.Size = new Size(99, 33);
+            this.cmdRandom.TabIndex = 25;
+            this.cmdRandom.Text = "RND";
+            this.cmdRandom.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleMode = AutoScaleMode.None;
-            this.ClientSize = new Size(892, 268);
+            this.ClientSize = new Size(892, 331);
+            this.Controls.Add(this.cmdRandom);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtBase8);
             this.Controls.Add(this.label6);
@@ -242,11 +253,11 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.radioButton2);
             this.Controls.Add(this.radioButton10);
-            this.Controls.Add(this.radioButton55);
-            this.Controls.Add(this.radioButton32);
+            this.Controls.Add(this.radioButtonB);
+            this.Controls.Add(this.radioButtonA);
             this.Controls.Add(this.radioButton16);
-            this.Controls.Add(this.txtBase55);
-            this.Controls.Add(this.txtBase32);
+            this.Controls.Add(this.txtBaseB);
+            this.Controls.Add(this.txtBaseA);
             this.Controls.Add(this.txtBase16);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -257,7 +268,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = "HexEx Example v1.00";
+            this.Text = "HexEx Example v2.00";
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -270,11 +281,11 @@
         private Label label3;
         private Label label4;
         private TextBox txtBase16;
-        private TextBox txtBase32;
-        private TextBox txtBase55;
+        private TextBox txtBaseA;
+        private TextBox txtBaseB;
         private RadioButton radioButton16;
-        private RadioButton radioButton32;
-        private RadioButton radioButton55;
+        private RadioButton radioButtonA;
+        private RadioButton radioButtonB;
         private RadioButton radioButton10;
         private RadioButton radioButton2;
         private TextBox txtBase10;
@@ -284,5 +295,6 @@
         private TextBox txtBase8;
         private Label label6;
         private Button button1;
+        private Button cmdRandom;
     }
 }
