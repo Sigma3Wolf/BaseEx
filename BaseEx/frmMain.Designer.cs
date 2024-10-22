@@ -1,5 +1,5 @@
 ﻿namespace HexExExample {
-    partial class Form1 {
+    partial class frmMain {
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -49,6 +49,7 @@
             this.label9 = new Label();
             this.cmdOperation = new Button();
             this.txtResult = new TextBox();
+            this.txtProof = new TextBox();
             this.SuspendLayout();
             // 
             // label2
@@ -266,7 +267,7 @@
             // lblBaseX
             // 
             this.lblBaseX.AutoSize = true;
-            this.lblBaseX.Location = new Point(463, 286);
+            this.lblBaseX.Location = new Point(456, 286);
             this.lblBaseX.Name = "lblBaseX";
             this.lblBaseX.Size = new Size(65, 25);
             this.lblBaseX.TabIndex = 24;
@@ -304,15 +305,25 @@
             this.txtResult.Text = "0";
             this.txtResult.TextAlign = HorizontalAlignment.Right;
             // 
+            // txtProof
+            // 
+            this.txtProof.Font = new Font("Courier New", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            this.txtProof.Location = new Point(534, 16);
+            this.txtProof.Multiline = true;
+            this.txtProof.Name = "txtProof";
+            this.txtProof.Size = new Size(359, 341);
+            this.txtProof.TabIndex = 35;
+            // 
             // Form1
             // 
             this.AutoScaleMode = AutoScaleMode.None;
-            this.ClientSize = new Size(535, 365);
+            this.ClientSize = new Size(905, 367);
             this.Controls.Add(this.txtResult);
-            this.Controls.Add(this.lblBaseX);
-            this.Controls.Add(this.txtNumber2);
-            this.Controls.Add(this.cmdOperation);
             this.Controls.Add(this.txtNumber1);
+            this.Controls.Add(this.txtNumber2);
+            this.Controls.Add(this.txtProof);
+            this.Controls.Add(this.lblBaseX);
+            this.Controls.Add(this.cmdOperation);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.radioButton8);
             this.Controls.Add(this.cmdRandom);
@@ -338,7 +349,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = "HexEx Example v2.00";
+            this.Text = "BaseEx Example v2.01";
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -370,5 +381,6 @@
         private Label label9;
         private Button cmdOperation;
         private TextBox txtResult;
+        private TextBox txtProof;
     }
 }
