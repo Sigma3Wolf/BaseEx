@@ -21,6 +21,7 @@
 // v2.01 - 2024-10-21:  Name change from HexEx to BaseEx
 //                      Add ZeroTrim();
 //                      BaseExValidated can now group by a number of bit (usefull to convert from one base to another);
+// v2.02 - 2024-10-22:  Add StringBase convertion;
 
 //Variable declaration
 using System.Collections.Generic;
@@ -287,6 +288,123 @@ namespace PrototypeOmega {
             //}
 
             return strRet;
+        }
+
+        //This function is based on string manipulation and DOES NOT include any calculation
+        //Base2 vers Base8, on separe la base 2 par groupe de 3 bit, on converti directement en base 8
+        public static string ConvertBase2ToBase8(string pstrValue) {
+            string strOutput = "Base 2 vers Base 8\r\n";
+
+            string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, pstrValue, 3);
+            strOutput = strOutput + strValidated;
+            strOutput = strOutput + "\r\n";
+            int lngNbLoop = strValidated.Length / 3;
+
+            string strConverted = "";
+            for (int i = 0; i < lngNbLoop; i++) {
+                string strGroup = StringEx.Mid(strValidated, (i * 3) + 1, 3);
+                long lngValue = BaseEx.StringToValue(BaseEx.enmBaseEx.Base2, strGroup);
+                string strDigit = lngValue.ToString();
+                strOutput = strOutput + "\r\n" + "[" + strGroup + "] = " + strDigit;
+                strConverted = strConverted + strDigit;
+            }
+
+            strOutput = strOutput + "\r\n" + strValidated + "x2 = " + strConverted + "x8";
+            return strOutput;
+        }
+
+        //This function is based on string manipulation and DOES NOT include any calculation
+        //Base8 vers Base2, on place sur 3 bit, chaque bit de base 8
+        public static string ConvertBase8ToBase2(string pstrValue) {
+            string strOutput = "Base 8 vers Base 2\r\n";
+
+            string strConverted = "";
+            foreach (char x in pstrValue) {
+                string strBit = x + "";
+                long lngValue = BaseEx.StringToValue(BaseEx.enmBaseEx.Base8, strBit);
+                BaseEx BaseEx2 = new BaseEx(BaseEx.enmBaseEx.Base2, lngValue);
+                string strGroup = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, BaseEx2.ToString(), 3);
+                strOutput = strOutput + "\r\n[" + strBit + "] = " + strGroup;
+                strConverted = strConverted + strGroup;
+            }
+
+            strConverted = BaseEx.ZeroTrim(strConverted);
+            strOutput = strOutput + "\r\n\r\n" + pstrValue + "x8 = " + strConverted + "x2";
+
+            return strOutput;
+        }
+
+        //This function is based on string manipulation and DOES NOT include any calculation
+        //Base2 vers Base16, on separe la base 2 par groupe de 4 bit, on converti directement en base 16
+        public static string ConvertBase2ToBase16(string pstrValue) {
+            string strOutput = "Base 2 vers Base 16\r\n";
+
+            string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, pstrValue, 4);
+            strOutput = strOutput + strValidated;
+            strOutput = strOutput + "\r\n";
+            int lngNbLoop = strValidated.Length / 4;
+
+            string strConverted = "";
+            for (int i = 0; i < lngNbLoop; i++) {
+                string strGroup = StringEx.Mid(strValidated, (i * 4) + 1, 4);
+                long lngValue = BaseEx.StringToValue(BaseEx.enmBaseEx.Base2, strGroup);
+                BaseEx baseEx = new BaseEx(BaseEx.enmBaseEx.Base16, lngValue);
+
+                string strDigit = baseEx.ToString();
+                strOutput = strOutput + "\r\n" + "[" + strGroup + "] = " + strDigit;
+                strConverted = strConverted + strDigit;
+            }
+
+            strOutput = strOutput + "\r\n" + strValidated + "x2 = " + strConverted + "x8";
+
+            return strOutput;
+        }
+
+        //This function is based on string manipulation and DOES NOT include any calculation
+        //Base16 vers Base8, je viens de trouver la méthode.
+        public static string ConvertBase16ToBase8(string pstrValue) {
+            string strOutput = "Base 16 vers Base 8\r\n";
+            long lngDigit = 0;
+            
+            string strConverted = "";
+            long lngRetenue = 0;
+            for (int i = pstrValue.Length; i > 0; i--) {
+                String strChar = StringEx.Mid(pstrValue, i, 1);
+                String strChar2 = strChar;
+                lngDigit = BaseEx.StringToValue(BaseEx.enmBaseEx.Base16, strChar);
+                int lngPosValue2 = (pstrValue.Length - i) * 2;
+                Debug.WriteLine(lngPosValue2.ToString());
+                int lngPosValue = (pstrValue.Length - i);
+                lngPosValue = (int)Math.Pow(2, lngPosValue);
+                lngDigit = lngDigit * lngPosValue;
+                lngDigit = lngDigit + lngRetenue;
+
+                lngRetenue = 0;
+                while (lngDigit > 7) {
+                    lngDigit = lngDigit - 8;
+                    lngRetenue++;
+                }
+                strChar2 = lngDigit.ToString();
+
+                if (lngPosValue > 0) {
+                    strOutput = strOutput + "[" + strChar + "] * " + lngPosValue.ToString() + " = " + strChar2 + " (retenu " + lngRetenue.ToString() + ")\r\n";
+                } else {
+                    strOutput = strOutput + "[" + strChar + "] = " + strChar2 + " (retenu " + lngRetenue.ToString() + ")\r\n";
+                }
+                strConverted = strChar2 + strConverted;
+            }
+
+            lngDigit = lngRetenue;
+            lngRetenue = 0;
+            while (lngDigit > 7) {
+                lngDigit = lngDigit - 8;
+                lngRetenue++;
+            }
+            strConverted = lngRetenue.ToString() + lngDigit.ToString() + strConverted;
+
+            strOutput = strOutput + pstrValue + "x16 = " + strConverted + "x8";
+
+            return strOutput;
         }
 
         public static string BaseExValidated(enmBaseEx penmBaseExSize, string pstrBaseEx, byte pbytGroup = 0) {

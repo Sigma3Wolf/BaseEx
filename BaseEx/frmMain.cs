@@ -41,115 +41,22 @@ namespace HexExExample {
 
         private void TxtBase2_Click(object? sender, EventArgs e) {
             if (radioButton8.Checked == true) {
-                string strValue = txtBase8.Text;
-                string strOutput = "Base 8 vers Base 2";
-                //Base8 vers Base2, on place sur 3 bit, chaque bit de base 8
-
-                string strConverted = "";
-                foreach (char x in strValue) {
-                    string strBit = x + "";
-                    long lngValue = BaseEx.StringToValue(BaseEx.enmBaseEx.Base8, strBit);
-                    BaseEx BaseEx2 = new BaseEx(BaseEx.enmBaseEx.Base2, lngValue);
-                    string strGroup = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, BaseEx2.ToString(), 3);
-                    strOutput = strOutput + "\r\n[" + strBit + "] = " + strGroup;
-                    strConverted = strConverted + strGroup;
-                }
-
-                strConverted = BaseEx.ZeroTrim(strConverted);
-                strOutput = strOutput + "\r\n\r\n" + strValue + "x8 = " + strConverted + "x2";
-                this.txtProof.Text = strOutput;
+                this.txtProof.Text = BaseEx.ConvertBase8ToBase2(txtBase8.Text);
             }
-
         }
 
         private void TxtBase8_Click(object? sender, EventArgs e) {
             if (radioButton2.Checked == true) {
-                string strValue = txtBase2.Text;
-                string strOutput = "Base 2 vers Base 8\r\n";
-                //Base2 vers Base8, on separe la base 2 par groupe de 3 bit, on converti directement en base 8
-
-                string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, strValue, 3);
-                strOutput = strOutput + strValidated;
-                strOutput = strOutput + "\r\n";
-                int lngNbLoop = strValidated.Length / 3;
-
-                string strConverted = "";
-                for (int i = 0; i < lngNbLoop; i++) {
-                    string strGroup = StringEx.Mid(strValidated, (i * 3) + 1, 3);
-                    long lngValue = BaseEx.StringToValue(BaseEx.enmBaseEx.Base2, strGroup);
-                    string strDigit = lngValue.ToString();
-                    strOutput = strOutput + "\r\n" + "[" + strGroup + "] = " + strDigit;
-                    strConverted = strConverted + strDigit;
-                }
-
-                strOutput = strOutput + "\r\n" + strValidated + "x2 = " + strConverted + "x8";
-                this.txtProof.Text = strOutput;
+                this.txtProof.Text = BaseEx.ConvertBase2ToBase8(txtBase2.Text);
             } else if (radioButton16.Checked == true) {
-                string strValue = txtBase16.Text;
-                string strOutput = "Base 16 vers Base 8\r\n";
-                //Base16 vers Base8, je viens de trouver la méthode.
-
-                string strConverted = "";
-                long lngRetenue = 0;
-                for (int i = strValue.Length; i > 0; i--) {
-                    String strChar = StringEx.Mid(strValue, i, 1);
-                    String strChar2 = strChar;
-                    long lngDigit = BaseEx.StringToValue(BaseEx.enmBaseEx.Base16, strChar);
-                    int lngPosValue2 = (strValue.Length - i) * 2;
-                    Debug.WriteLine(lngPosValue2.ToString());
-                    int lngPosValue = (strValue.Length - i);
-                    lngPosValue = (int)Math.Pow(2, lngPosValue);
-                    lngDigit = lngDigit * lngPosValue;
-                    lngDigit = lngDigit + lngRetenue;
-
-                    lngRetenue = 0;
-                    while (lngDigit > 7) {
-                        lngDigit = lngDigit - 8;
-                        lngRetenue++;
-                    }
-                    strChar2 = lngDigit.ToString();
-
-                    if (lngPosValue > 0) {
-                        strOutput = strOutput + "[" + strChar + "] * " + lngPosValue.ToString() + " = " + strChar2 + " (retenu " + lngRetenue.ToString() + ")\r\n";
-                    } else {
-                        strOutput = strOutput + "[" + strChar + "] = " + strChar2 + " (retenu " + lngRetenue.ToString() + ")\r\n";
-                    }
-                    strConverted = strChar2 + strConverted;
-                }
-
-                if (lngRetenue != 0) {
-                    //strOutput = strOutput = "\r\nAdding Retenue";
-                    strConverted = lngRetenue.ToString() + strConverted;
-                }
-                strOutput = strOutput + strValue + "x16 = " + strConverted + "x8";
-                this.txtProof.Text = strOutput;
+                //367D50 FAIL
+                this.txtProof.Text = BaseEx.ConvertBase16ToBase8(txtBase16.Text);
             }
         }
 
         private void TxtBase16_Click(object? sender, EventArgs e) {
             if (radioButton2.Checked == true) {
-                string strValue = txtBase2.Text;
-                string strOutput = "Base 2 vers Base 16\r\n";
-                //Base2 vers Base16, on separe la base 2 par groupe de 4 bit, on converti directement en base 16
-
-                string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, strValue, 4);
-                strOutput = strOutput + strValidated;
-                strOutput = strOutput + "\r\n";
-                int lngNbLoop = strValidated.Length / 4;
-
-                string strConverted = "";
-                for (int i = 0; i < lngNbLoop; i++) {
-                    string strGroup = StringEx.Mid(strValidated, (i * 4) + 1, 4);
-                    long lngValue = BaseEx.StringToValue(BaseEx.enmBaseEx.Base2, strGroup);
-                    BaseEx baseEx = new BaseEx(BaseEx.enmBaseEx.Base16, lngValue);
-
-                    string strDigit = baseEx.ToString();
-                    strOutput = strOutput + "\r\n" + "[" + strGroup + "] = " + strDigit;
-                    strConverted = strConverted + strDigit;
-                }
-
-                strOutput = strOutput + "\r\n" + strValidated + "x2 = " + strConverted + "x8";
-                this.txtProof.Text = strOutput;
+                this.txtProof.Text = BaseEx.ConvertBase2ToBase16(txtBase2.Text);
             }
         }
 
