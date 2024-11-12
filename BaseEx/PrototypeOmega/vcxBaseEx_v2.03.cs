@@ -9,12 +9,8 @@
 //*****************************************************************************************//
 //**      If you modify this file, you MUST rename it to exclude the version number.     **//
 //*****************************************************************************************//
+// Usage: Convert between different Base (2, 8, 10, 16, ...) and allow math function;
 
-// v1.00 - 2024-08-12:	Initial release Hex32 (32 bit);
-// v1.01 - 2024-08-20:	Change Hex32PadLeft to public; Minimum size is now 2; byte is used instead of ushort;
-//							add Hex16 (regular 16 bit) and Hex55 (55 bit);
-// v1.02 - 2024-08-27:	Remove dependency to outside library (include static rnd);
-// v1.03 - 2024-09-25:	Updated ToString to allow enmHexExBase argument;
 // v2.00 - 2024-10-04:	Breaking change;
 //                          replaced Base32 by Base34; remove Base32 ** won't be used for calculation **
 //                          replaced Base55 by Base56; remove Base55 ** won't be used for calculation **
@@ -22,12 +18,12 @@
 //                      Add ZeroTrim();
 //                      BaseExValidated can now group by a number of bit (usefull to convert from one base to another);
 // v2.02 - 2024-10-22:  Add StringBase convertion;
+// v2.03 - 2024-11-11:  Fix some compatibility issue with .Net 4.8.1
 
 //Variable declaration
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Globalization;
 
 namespace PrototypeOmega {
     //https://stackoverflow.com/questions/26829414/c-sharp-boxing-wrapper-custom-class-act-as-integer
@@ -41,7 +37,6 @@ namespace PrototypeOmega {
 
             Base16 = 16,
 
-            [Display(Name = "Base35 (default)")]
             Base35 = 35,
 
             Base56 = 56
@@ -415,10 +410,10 @@ namespace PrototypeOmega {
                 strBaseEx = pstrBaseEx;
 
                 string strCharBank = BaseEx.CharBank(penmBaseExSize);
-                char chrChar = '\0';
+                string strChar = string.Empty;
                 for (int i = 0; i < strBaseEx.Length; i++) {
-                    chrChar = strBaseEx[i];
-                    if (!strCharBank.Contains(chrChar)) {
+                    strChar = strBaseEx[i] + "";
+                    if (!strCharBank.Contains(strChar)) {
                         strBaseEx = "";
                         break;
                     }

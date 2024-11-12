@@ -9,40 +9,13 @@
 //******************************************************************************************//
 //**      If you modify this file, you MUST rename it to exclude the version number.      **//
 //******************************************************************************************//
+// Usage: String manipulation in C# using function from Vb6
 
-//v1.01 - 2019-12-25:	Initial release;
-//						BREAKING CODE - Mid() function was working by Index (C#) Instead of Position (Vb6);
-//						Fix order comparaison in Left() and Right() to evaluate IsNullOrEmpty() first;
-//v1.02 - 2019-12-29:	Add ExtractXmlValue();
-//v1.03 - 2020-01-02:	add NewGuidEx();
-//v1.04	- 2020-05-13:	Add internal modifier;
-//v1.05 - 2020-05-14:	Add ToEx internal class;
-//v1.06 - 2020-05-17:	Add ToBytes();
-//v1.07 - 2020-05-17:	.ToInt32 now support HEX string;
-//v1.08 - 2020-08-28:	Fix a bug in ToDateTime() when getting Time position;
-//						ren ToDateStr() to ToSqlString() for less confusion;
-//						ren ToDateTime() to SqlStringToDateTime() for less confusion;
-//						2019-12-25 change to MID function, broke the SqlStringToDateTime() function using Mid() - FIXED;
-//v1.09 - 2020-08-29:	add new LEFT/RIGHT function to make Length parameter optional;
-//v1.10 - 2021-02-28:	add new HexEncode(), HexDecode(); update var name in Base64Encode(), Base64Decode();
-//v1.11 - 2021-03-05:	cosmetic: fix some unnecessary declaration;
-//v1.12 - 2021-03-27:	Fix an issue with InstrRev() startposition where -1 were not taking into account;
-//v1.13 - 2021-05-09:	Use of PrototypeOmega namespace; simplify NewGuidEx(); add ExtractPath();
-//v1.14 - 2021-09-10:	Use of inline declaration;
-//v1.15 - 2021-09-22:	Add PascalCase() function;
-//v1.16 - 2021-09-26:	remove secondary namespace [vcxStringEx];
-//v1.17 - 2022-01-03:	Adapt to FrameNetCore6;
-//v2.00 - 2022-01-03:	Adapt to FrameNetCore6;
-//v2.01 - 2022-02-19:	Add ToEx.ToPhone;
-//v2.02 - 2023-06-18:	Compatible with Vs2019;
-//v2.03 - 2023-08-26:	Move Base64 function to another module;
-//v2.04 - 2023-09-24:	fix Mid function (was returning value for index 1 when asked for index 0)
-//v2.05 - 2023-10-01:	add RemoveAccents(); change Copyright style header;
-//v3.00 - 2023-10-15:	change public to internal; Add AttemptSetTextClipBoard(); Add InternationalId;
+// v3.00 - 2023-10-15:	change public to internal; Add AttemptSetTextClipBoard(); Add InternationalId;
 //						AppEx dependant;
-//v3.01 - 2023-11-03:	removed AttemptSetTextClipBoard() because Clipboard() is already handled in vcxAppEx_v3.01;
-//v3.02 - 2024-01-22:	Change Mid function. StartPos is now always valid and default to 0;
-//v3.03 - 2024-08-13:	mainly cosmetic, minor logic fix; remove internal modifier for Web;
+// v3.01 - 2023-11-03:	removed AttemptSetTextClipBoard() because Clipboard() is already handled in vcxAppEx_v3.01;
+// v3.02 - 2024-01-22:	Change Mid function. StartPos is now always valid and default to 0;
+// v3.03 - 2024-08-13:	mainly cosmetic, minor logic fix; remove internal modifier for Web;
 
 //Variable declaration
 using System;
