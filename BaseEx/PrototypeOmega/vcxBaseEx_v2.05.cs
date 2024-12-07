@@ -23,9 +23,7 @@
 // v2.05 - 2024-12-07:  Fix a typo string in the return of ConvertBase2ToBase16(); Fix some text output;
 
 //Variable declaration
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+//using System.Diagnostics;
 
 namespace PrototypeOmega {
     //https://stackoverflow.com/questions/26829414/c-sharp-boxing-wrapper-custom-class-act-as-integer
@@ -397,7 +395,7 @@ namespace PrototypeOmega {
                 String strChar2 = strChar;
                 lngDigit = BaseEx.StringToValue(BaseEx.enmBaseEx.Base16, strChar);
                 int lngPosValue2 = (pstrValue.Length - i) * 2;
-                Debug.WriteLine(lngPosValue2.ToString());
+                //Debug.WriteLine(lngPosValue2.ToString());
                 int lngPosValue = (pstrValue.Length - i);
                 lngPosValue = (int)Math.Pow(2, lngPosValue);
                 lngDigit = lngDigit * lngPosValue;
