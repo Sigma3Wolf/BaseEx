@@ -20,7 +20,7 @@
 // v2.02 - 2024-10-22:  Add StringBase convertion;
 // v2.03 - 2024-11-11:  Fix some compatibility issue with .Net 4.8.1;
 // v2.04 - 2024-11-12:  Add base30 and base50 (compatible together);
-// v2.05 - 2024-12-07:  Fix a type string in the return of ConvertBase2ToBase16();
+// v2.05 - 2024-12-07:  Fix a typo string in the return of ConvertBase2ToBase16(); Fix some text output;
 
 //Variable declaration
 using System;
@@ -315,7 +315,7 @@ namespace PrototypeOmega {
 			string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, pstrValue, 3);
 
 			string strOutput = "Base 2 vers Base 8\r\n";
-            strOutput = strOutput + strValidated + "\r\n";
+            strOutput = strOutput + strValidated + "x2\r\n";
 			int lngNbLoop = strValidated.Length / 3;
 
             string strConverted = "";
@@ -337,7 +337,7 @@ namespace PrototypeOmega {
 			string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base8, pstrValue);
 
 			string strOutput = "Base 8 vers Base 2\r\n";
-			strOutput = strOutput + strValidated + "\r\n";
+			strOutput = strOutput + strValidated + "x8\r\n";
 
 			string strConverted = "";
             foreach (char x in pstrValue) {
@@ -361,7 +361,7 @@ namespace PrototypeOmega {
 			string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, pstrValue, 4);
 
 			string strOutput = "Base 2 vers Base 16\r\n";
-			strOutput = strOutput + strValidated + "\r\n";
+			strOutput = strOutput + strValidated + "x2\r\n";
             int lngNbLoop = strValidated.Length / 4;
 
             string strConverted = "";
@@ -386,7 +386,7 @@ namespace PrototypeOmega {
 			string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base16, pstrValue);
 
 			string strOutput = "Base 16 vers Base 8\r\n";
-			strOutput = strOutput + strValidated + "\r\n";
+			strOutput = strOutput + strValidated + "x16\r\n";
 
 			long lngDigit = 0;
             
