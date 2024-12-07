@@ -18,7 +18,9 @@
 //                      Add ZeroTrim();
 //                      BaseExValidated can now group by a number of bit (usefull to convert from one base to another);
 // v2.02 - 2024-10-22:  Add StringBase convertion;
-// v2.03 - 2024-11-11:  Fix some compatibility issue with .Net 4.8.1
+// v2.03 - 2024-11-11:  Fix some compatibility issue with .Net 4.8.1;
+// v2.04 - 2024-11-12:  Add base30 and base50 (compatible together);
+// v2.05 - 2024-12-07:  Fix a type string in the return of ConvertBase2ToBase16();
 
 //Variable declaration
 using System;
@@ -37,7 +39,11 @@ namespace PrototypeOmega {
 
             Base16 = 16,
 
+            Base30 = 30,
+
             Base35 = 35,
+
+            Base50 = 50,
 
             Base56 = 56
         }
@@ -136,33 +142,44 @@ namespace PrototypeOmega {
         public static string CharBank(enmBaseEx enmHexSize) {
             string strRet = "";
 
-            //                      ****  Base2  ****
-            //                        12
-            const string cstrBase2 = "01";
+            //                ****  Base2  ****
+            //                  12
+            string cstrBase2 = "01";
 
-            //                      ****  Base8  ****
-            //                        12345678
-            const string cstrBase8 = "01234567";
+            //                ****  Base8  ****
+            //                  12345678
+            string cstrBase8 = "01234567";
 
-            //                      ****  Base10  ****
-            //                                  1
-            //                         1234567890
-            const string cstrBase10 = "0123456789";
+            //                ****  Base10  ****
+            //                            1
+            //                   1234567890
+            string cstrBase10 = "0123456789";
 
-            //                      ****  Base16  ****
-            //                                     1
-            //                            1234567890123456
-            const string cstrBase16 = cstrBase10 + "ABCDEF";
+            //                ****  Base16  ****
+            //                               1
+            //                      1234567890123456
+            string cstrBase16 = cstrBase10 + "ABCDEF";
 
-            //                      ****  Base35  ****
-            //                                     1         2         3
-            //                            12345678901234567890123456789012345
-            const string cstrBase35 = cstrBase10 + "abcdefghijkmnopqrstuvwxyz";
+            //                ****  Base30  ****
+            //                               1         2         3
+            //                      123456789012345678901234567890
+            string cstrBase30 = cstrBase10 + "adefghjkmnpqrtuvwxyz";  //compatible with cstrBase50
 
-            //                      ****  Base56  ****
-            //            1         2         3         4         5
-            //   12345678901234567890123456789012345678901234567890123456
-            const string cstrBase56 = cstrBase35 + "ADEFGHJKLMNPQRTUVWXYZ";
+            //                ****  Base35  ****
+            //                               1         2         3
+            //                      12345678901234567890123456789012345
+            string cstrBase35 = cstrBase10 + "abcdefghijkmnopqrstuvwxyz";
+
+            //                ****  Base50  ****
+            //           1         2         3         4         5
+            //  12345678901234567890123456789012345678901234567890
+            string cstrBase50 = cstrBase30 + "ADEFGHJKMNPQRTUVWXYZ";  //compatible with cstrBase30
+            //const string cstrBase50 = cstrBase30 + cstrBase30.ToUpper();
+
+            //                ****  Base56  ****
+            //      1         2         3         4         5
+            //45678901234567890123456789012345678901234567890123456
+            string cstrBase56 = cstrBase35 + "ADEFGHJKLMNPQRTUVWXYZ";
 
             switch (enmHexSize) {
                 case enmBaseEx.Base2:
@@ -181,6 +198,19 @@ namespace PrototypeOmega {
                     strRet = cstrBase16;
                     break;
 
+                case enmBaseEx.Base30:
+                    strRet = cstrBase30;
+                    break;
+
+                case enmBaseEx.Base35:
+                    //l removed (1)
+                    strRet = cstrBase35;
+                    break;
+
+                case enmBaseEx.Base50:
+                    strRet = cstrBase50;
+                    break;
+
                 case enmBaseEx.Base56:
                     //                ****  Base56  ****
                     //                base 35 + Added caracter to achieved Base55
@@ -190,13 +220,6 @@ namespace PrototypeOmega {
                     //O removed (0)
                     //S removed (5)
                     strRet = cstrBase56;
-                    break;
-
-                case enmBaseEx.Base35:
-                default:
-                    //                ****  Base35  ****
-                    //l removed (1)
-                    strRet = cstrBase35;
                     break;
             }
 
@@ -233,7 +256,7 @@ namespace PrototypeOmega {
         private static string BaseExFixCase(enmBaseEx enmHexSize, string pstrBaseEx) {
             string strRet = pstrBaseEx;
 
-            if (enmHexSize != enmBaseEx.Base56) {
+            if ((enmHexSize != enmBaseEx.Base50) && (enmHexSize != enmBaseEx.Base56)) {
                 strRet = strRet.ToUpper();
             }
 
@@ -350,7 +373,7 @@ namespace PrototypeOmega {
                 strConverted = strConverted + strDigit;
             }
 
-            strOutput = strOutput + "\r\n" + strValidated + "x2 = " + strConverted + "x8";
+            strOutput = strOutput + "\r\n" + strValidated + "x2 = " + strConverted + "x16";
 
             return strOutput;
         }
@@ -435,7 +458,7 @@ namespace PrototypeOmega {
         //Maxchar is based on [uint] but we're using [long] for safety
         //Return the maximum number of digit allowed per BaseEx type
         public static byte MaxChar(enmBaseEx penmHexSize) {
-            byte lngMaxChar = 10;  //Base55
+            byte lngMaxChar = 10;  //Base50, Base55
 
             //To improve: We should use a formulae instead, based on uInt
             switch (penmHexSize) {
@@ -453,6 +476,10 @@ namespace PrototypeOmega {
 
                 case enmBaseEx.Base16:
                     lngMaxChar = 14;
+                    break;
+
+                case enmBaseEx.Base30:
+                    lngMaxChar = 12;
                     break;
 
                 case enmBaseEx.Base35:
