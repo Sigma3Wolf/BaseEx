@@ -49,7 +49,6 @@ namespace HexExExample {
             if (radioButton2.Checked == true) {
                 this.txtProof.Text = BaseEx.ConvertBase2ToBase8(txtBase2.Text);
             } else if (radioButton16.Checked == true) {
-                //367D50 FAIL
                 this.txtProof.Text = BaseEx.ConvertBase16ToBase8(txtBase16.Text);
             }
         }

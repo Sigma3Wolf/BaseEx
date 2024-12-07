@@ -311,12 +311,12 @@ namespace PrototypeOmega {
         //This function is based on string manipulation and DOES NOT include any calculation
         //Base2 vers Base8, on separe la base 2 par groupe de 3 bit, on converti directement en base 8
         public static string ConvertBase2ToBase8(string pstrValue) {
-            string strOutput = "Base 2 vers Base 8\r\n";
+			//string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, pstrValue);
+			string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, pstrValue, 3);
 
-            string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, pstrValue, 3);
-            strOutput = strOutput + strValidated;
-            strOutput = strOutput + "\r\n";
-            int lngNbLoop = strValidated.Length / 3;
+			string strOutput = "Base 2 vers Base 8\r\n";
+            strOutput = strOutput + strValidated + "\r\n";
+			int lngNbLoop = strValidated.Length / 3;
 
             string strConverted = "";
             for (int i = 0; i < lngNbLoop; i++) {
@@ -327,16 +327,19 @@ namespace PrototypeOmega {
                 strConverted = strConverted + strDigit;
             }
 
-            strOutput = strOutput + "\r\n" + strValidated + "x2 = " + strConverted + "x8";
+            strOutput = strOutput + "\r\n\r\n" + strValidated + "x2 = " + strConverted + "x8";
             return strOutput;
         }
 
         //This function is based on string manipulation and DOES NOT include any calculation
         //Base8 vers Base2, on place sur 3 bit, chaque bit de base 8
         public static string ConvertBase8ToBase2(string pstrValue) {
-            string strOutput = "Base 8 vers Base 2\r\n";
+			string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base8, pstrValue);
 
-            string strConverted = "";
+			string strOutput = "Base 8 vers Base 2\r\n";
+			strOutput = strOutput + strValidated + "\r\n";
+
+			string strConverted = "";
             foreach (char x in pstrValue) {
                 string strBit = x + "";
                 long lngValue = BaseEx.StringToValue(BaseEx.enmBaseEx.Base8, strBit);
@@ -355,11 +358,10 @@ namespace PrototypeOmega {
         //This function is based on string manipulation and DOES NOT include any calculation
         //Base2 vers Base16, on separe la base 2 par groupe de 4 bit, on converti directement en base 16
         public static string ConvertBase2ToBase16(string pstrValue) {
-            string strOutput = "Base 2 vers Base 16\r\n";
+			string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, pstrValue, 4);
 
-            string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base2, pstrValue, 4);
-            strOutput = strOutput + strValidated;
-            strOutput = strOutput + "\r\n";
+			string strOutput = "Base 2 vers Base 16\r\n";
+			strOutput = strOutput + strValidated + "\r\n";
             int lngNbLoop = strValidated.Length / 4;
 
             string strConverted = "";
@@ -373,7 +375,7 @@ namespace PrototypeOmega {
                 strConverted = strConverted + strDigit;
             }
 
-            strOutput = strOutput + "\r\n" + strValidated + "x2 = " + strConverted + "x16";
+            strOutput = strOutput + "\r\n\r\n" + strValidated + "x2 = " + strConverted + "x16";
 
             return strOutput;
         }
@@ -381,8 +383,12 @@ namespace PrototypeOmega {
         //This function is based on string manipulation and DOES NOT include any calculation
         //Base16 vers Base8, je viens de trouver la méthode.
         public static string ConvertBase16ToBase8(string pstrValue) {
-            string strOutput = "Base 16 vers Base 8\r\n";
-            long lngDigit = 0;
+			string strValidated = BaseEx.BaseExValidated(BaseEx.enmBaseEx.Base16, pstrValue);
+
+			string strOutput = "Base 16 vers Base 8\r\n";
+			strOutput = strOutput + strValidated + "\r\n";
+
+			long lngDigit = 0;
             
             string strConverted = "";
             long lngRetenue = 0;
@@ -411,16 +417,46 @@ namespace PrototypeOmega {
                 }
                 strConverted = strChar2 + strConverted;
             }
+            strOutput = strOutput + "\r\n";
 
-            lngDigit = lngRetenue;
+            //remaining...
+            long lngRemaining = lngRetenue;
+			lngDigit = lngRetenue;
             lngRetenue = 0;
-            while (lngDigit > 7) {
-                lngDigit = lngDigit - 8;
-                lngRetenue++;
-            }
-            strConverted = lngRetenue.ToString() + lngDigit.ToString() + strConverted;
+            if (lngDigit > 7) {
+                strOutput = strOutput + "remaining: [" + lngDigit .ToString() + "]\r\n";
 
-            strOutput = strOutput + pstrValue + "x16 = " + strConverted + "x8";
+                //possible bug here, could the remaining division higher then 7 ? if so we need another digit
+                //but it doesn't seem possible it would mean initial remaining is higher then 77x8. we need check possibility
+                lngRetenue = (lngDigit / 8);
+                long lngSubstract = lngRetenue * 8;
+				//while (lngDigit > 7) {
+				//                lngDigit = lngDigit - 8;
+				//                lngRetenue++;
+				//            }
+				//367D50 FAIL
+				lngDigit = lngDigit - lngSubstract;
+
+                string strTmp = lngRemaining.ToString();
+                if (strTmp.Length < 3) {
+                    strTmp = "   " + strTmp;
+                    strTmp = strTmp.RightEx(3);
+				}
+				
+				strOutput = strOutput + strTmp + " / 8     = " + lngRetenue.ToString();
+				strOutput = strOutput + " => [" + lngRetenue.ToString() + " * 8 = {" + lngSubstract.ToString() + "}]\r\n";
+
+                strOutput = strOutput + strTmp;
+                strTmp = lngSubstract.ToString();
+				if (strTmp.Length < 3) {
+					strTmp = "   " + strTmp;
+					strTmp = strTmp.RightEx(3);
+				}
+				strOutput = strOutput + " - {" + strTmp + "} = " + lngDigit.ToString();
+			}
+			strConverted = lngRetenue.ToString() + lngDigit.ToString() + strConverted;
+
+            strOutput = strOutput + "\r\n\r\n" + pstrValue + "x16 = " + strConverted + "x8";
 
             return strOutput;
         }
