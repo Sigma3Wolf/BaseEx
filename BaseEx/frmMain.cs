@@ -140,42 +140,53 @@ namespace HexExExample {
 
         private void RadioButtonHex_Click(object? sender, EventArgs e) {
             if (sender != null) {
+				this.enmPreviousBase = this.enmCurrentBase;
+				BaseEx.enmBaseEx enmNewBase = this.enmCurrentBase;
+
+				string strHighLight = "000000";
                 RadioButton objRadio = (RadioButton)sender;
                 switch (objRadio.Name) {
                     case "radioButton2":
-                        this.enmCurrentBase = BaseEx.enmBaseEx.Base2;
-                        break;
+						enmNewBase = BaseEx.enmBaseEx.Base2;
+						//x8; x16 highlight
+						strHighLight = "010100";
+						break;
 
                     case "radioButton8":
-                        this.enmCurrentBase = BaseEx.enmBaseEx.Base8;
-                        break;
+						enmNewBase = BaseEx.enmBaseEx.Base8;
+						//x2 highlight
+						strHighLight = "100000";
+						break;
 
                     case "radioButton10":
-                        this.enmCurrentBase = BaseEx.enmBaseEx.Base10;
+						enmNewBase = BaseEx.enmBaseEx.Base10;
                         break;
 
                     case "radioButton16":
-                        this.enmCurrentBase = BaseEx.enmBaseEx.Base16;
-                        break;
+						enmNewBase = BaseEx.enmBaseEx.Base16;
+						//x8 highlight
+						strHighLight = "010000";
+						break;
 
                     case "radioButton35":
-                        this.enmCurrentBase = BaseEx.enmBaseEx.Base35;
+						enmNewBase = BaseEx.enmBaseEx.Base35;
                         break;
 
                     case "radioButton56":
                     default:
-                        this.enmCurrentBase = BaseEx.enmBaseEx.Base56;
+						enmNewBase = BaseEx.enmBaseEx.Base56;
                         break;
                 }
-                this.strCharBank = BaseEx.CharBank(this.enmCurrentBase);
+                this.strCharBank = BaseEx.CharBank(enmNewBase);
                 this.lblBaseX.Text = "Base " + this.strCharBank.Length.ToString();
 
-                if (this.enmPreviousBase != this.enmCurrentBase) {
+				this.enmCurrentBase = enmNewBase;
+				if (this.enmPreviousBase != enmNewBase) {
                     long lngNumber1 = BaseEx.StringToValue(this.enmPreviousBase, this.txtNumber1.Text);
                     long lngNumber2 = BaseEx.StringToValue(this.enmPreviousBase, this.txtNumber2.Text);
 
-                    BaseEx hexEx1 = new BaseEx(this.enmCurrentBase, lngNumber1);
-                    BaseEx hexEx2 = new BaseEx(this.enmCurrentBase, lngNumber2);
+                    BaseEx hexEx1 = new BaseEx(enmNewBase, lngNumber1);
+                    BaseEx hexEx2 = new BaseEx(enmNewBase, lngNumber2);
 
                     this.txtNumber1.Text = hexEx1.ToString();
                     this.txtNumber2.Text = hexEx2.ToString();
@@ -183,8 +194,37 @@ namespace HexExExample {
 
                     this.UpdateValue();
                 }
-            }
-        }
+
+                string strChar = "";
+				strChar = strHighLight.MidEx(1, 1);
+				if (strChar == "1") {
+					txtBase2.BackColor = Color.LightGreen;
+				} else {
+					txtBase2.BackColor = SystemColors.Control;
+				}
+                
+				strChar = strHighLight.MidEx(2, 1);
+				if (strChar == "1") {
+					txtBase8.BackColor = Color.LightGreen;
+				} else {
+					txtBase8.BackColor = SystemColors.Control;
+				}
+
+				strChar = strHighLight.MidEx(3, 1);
+				if (strChar == "1") {
+					txtBase10.BackColor = Color.LightGreen;
+				} else {
+					txtBase10.BackColor = SystemColors.Control;
+				}
+
+				strChar = strHighLight.MidEx(4, 1);
+				if (strChar == "1") {
+					txtBase16.BackColor = Color.LightGreen;
+				} else {
+					txtBase16.BackColor = SystemColors.Control;
+				}
+			}
+		}
 
         private void UpdateOperation() {
             long lngValue1 = BaseEx.StringToValue(this.enmCurrentBase, txtNumber1.Text);
